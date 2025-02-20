@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="33850935-af74-409b-a2a5-aaeec2cfee18" name="58.188">
+        <fileTransfer rootFolder="/opt/bookmarks" accessType="SFTP" host="192.168.58.188" port="22" sshConfigId="8cad8883-1fa2-4f66-ad14-ac67d003a4d6" sshConfig="58.188">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

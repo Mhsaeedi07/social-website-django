@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+</head>
+<body>
+<div id="header">
+    <span class="logo">Bookmarks</span>
+    {% if request.user.is_authenticated %}
+        <ul class="menu">
+            <li {% if section == "dashboard" %}class="selected"{% endif %}>
+                <a href="{% url "dashboard" %}">My dashboard</a>
+            </li>
+            <li {% if section == "images" %}class="selected"{% endif %}>
+                <a href="{% url "images:list" %}">Images</a>
+            </li>
+            <li {% if section == "people" %}class="selected"{% endif %}>
+                <a href="{% url "user_list" %}">People</a>
+            </li>
+        </ul>
+    {% endif %}
+    <span class="user">
+      {% if request.user.is_authenticated %}
+          Hello {{ request.user.first_name|default:request.user.username }},
+          <form action="{% url "logout" %}" method="post">
+          <button type="submit">Logout</button>
+          {% csrf_token %}
+        </form>
+      {% else %}
+          <a href="{% url "login" %}">Log-in</a>
+      {% endif %}
+    </span>
+</div>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+                <a href="#" class="close">x</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+<script>
+    // Function to get CSRF token from cookies
+    function getCsrfToken() {
+        const name = 'csrftoken';
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    const csrftoken = getCsrfToken();
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // DOM loaded
+        {% block domready %}
+        {% endblock %}
+    });
+</script>
+</body>
+</html>
